@@ -1,7 +1,11 @@
 import { useTranslation } from "react-i18next";
 import * as S from "./styles";
+import type { XlsxDriverData } from "../xlsxinput/types";
+interface ChartProps {
+  selectedDriver: XlsxDriverData;
+}
 
-export const Comment = () => {
+export const Comment: React.FC<ChartProps> = ({ selectedDriver }) => {
   const { t } = useTranslation();
 
   return (
@@ -11,7 +15,7 @@ export const Comment = () => {
         <S.Detail />
         {t("generalComments")}
       </h3>
-      <span>{t("notApprovedReason")}</span>
+      <span>{t(selectedDriver["General comments"])}</span>
     </S.Holder>
   );
 };

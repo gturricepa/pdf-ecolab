@@ -12,5 +12,6 @@ export type XlsxDriverData = {
   Transmission: string;
   Average: string;
   Rating: string;
+  "General comments": string;
   [key: number]: string | number | "NA"; // Colunas dinâmicas de 1 até 53
 };

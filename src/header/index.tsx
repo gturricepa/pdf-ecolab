@@ -15,10 +15,18 @@ const Header: React.FC<HeaderProps> = ({ selectedDriver }) => {
   // #C4575B
   console.log(selectedDriver);
 
-  function excelDateToJSDate(serial: number): Date {
-    const excelEpoch = new Date(1899, 11, 30); // Excel epoch start date (base zero)
-    const jsDate = new Date(excelEpoch.getTime() + serial * 86400000);
-    return jsDate;
+  function excelDateToJSDate(
+    serial: number | string,
+    locale: string = "pt-BR"
+  ): string | undefined {
+    if (serial === "Permanent") return "Permanent";
+
+    const excelEpoch = new Date(1899, 11, 30);
+    const jsDate = new Date(excelEpoch.getTime() + Number(serial) * 86400000);
+
+    if (jsDate.getFullYear() === 2023) return "N/A";
+
+    return jsDate.toLocaleDateString(locale);
   }
   return (
     <S.Holder>
@@ -53,11 +61,7 @@ const Header: React.FC<HeaderProps> = ({ selectedDriver }) => {
           </span>
           <span>
             <p>{t("licenseDue")}:</p>
-            <div>
-              {excelDateToJSDate(
-                Number(selectedDriver["License expiration"])
-              ).toLocaleDateString("pt-BR")}
-            </div>
+            <div>{excelDateToJSDate(selectedDriver["License expiration"])}</div>
           </span>
         </S.Section>
         <S.Section2>

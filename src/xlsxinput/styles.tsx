@@ -16,11 +16,12 @@ export const Content = styled.div`
 `;
 
 export const SelectContent = styled.div`
-  flex: 2;
   display: flex;
   flex-direction: column;
   align-items: center;
-  max-width: 400px; /* Limita a largura do painel */
+  justify-content: center;
+  width: 100%; /* Limita a largura do painel */
+  /* background-color: pink; */
 `;
 
 export const PdfSimulation = styled.div`
@@ -95,4 +96,21 @@ export const Loader = styled.div`
       transform: rotate(0.5turn);
     }
   }
+`;
+
+export const PdfSimulationHorizontal = styled.div`
+  width: 1123px; /* 297mm em ~96 DPI */
+  height: 794px; /* 210mm em ~96 DPI */
+  padding: 10px;
+  border-radius: 8px;
+  background-color: #fff;
+  overflow-y: auto;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  z-index: 555;
+  box-sizing: border-box;
+  overflow: hidden;
+  margin: 0 auto; /* Centra a div horizontalmente */
 `;

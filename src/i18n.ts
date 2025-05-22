@@ -66,6 +66,15 @@ i18n.use(initReactI18next).init({
         generalComments: "General Comments",
         DETECTED: "DETECTED",
         "NOT DETECTED": "NOT DETECTED",
+        report: "Report",
+        certificate: "Certificate",
+        "Effectively develops the driving techniques proposed by the training.":
+          "Effectively develops the driving techniques proposed by the training.",
+        "Despite having little practical experience, demonstrated a good level of driving ability and successfully applied the techniques developed in training":
+          "Despite having little practical experience, demonstrated a good level of driving ability and successfully applied the techniques developed in training",
+        "No comments": "No comments",
+        "Through the assistance of the instructor and specific work on some of the preventive techniques proposed by the training, he/she manages to reach a satisfactory level. It is recommended to work individually on the development of the revised concepts so that you improve your evolution as a safe driver.":
+          "Through the assistance of the instructor and specific work on some of the preventive techniques proposed by the training, he/she manages to reach a satisfactory level. It is recommended to work individually on the development of the revised concepts so that you improve your evolution as a safe driver.",
         notApprovedReason:
           "Does not fully develop the preventive driving techniques proposed by the training. A significant risk level is identified, leading to the decision of NOT APPROVED. A special report will be issued on the training characteristics and recommended actions. Does not fully develop the preventive driving techniques proposed by the training. A significant risk level is identified, leading to the decision of NOT APPROVED. A special report will be issued on the training characteristics and recommended actions. Does not fully develop the preventive driving techniques proposed by the training. A significant risk level is identified, leading to the decision of NOT APPROVED. A special report will be issued on the training characteristics and recommended actions.",
       },
@@ -129,6 +138,15 @@ i18n.use(initReactI18next).init({
         generalComments: "Comentarios Generales",
         DETECTED: "DETECTADO",
         "NOT DETECTED": "NO DETECTADO",
+        report: "Informe",
+        certificate: "Certificado",
+        "Through the assistance of the instructor and specific work on some of the preventive techniques proposed by the training, he/she manages to reach a satisfactory level. It is recommended to work individually on the development of the revised concepts so that you improve your evolution as a safe driver.":
+          "A través de la asistencia del instructor y un trabajo específico sobre algunas de las técnicas preventivas propuestas por el entrenamiento, él/ella logra alcanzar un nivel satisfactorio. Se recomienda trabajar de forma individual en el desarrollo de los conceptos revisados para que puedas mejorar tu evolución como conductor seguro.",
+        "Effectively develops the driving techniques proposed by the training.":
+          "Desarrolla eficazmente las técnicas de conducción propuestas por el entrenamiento.",
+        "Despite having little practical experience, demonstrated a good level of driving ability and successfully applied the techniques developed in training":
+          "A pesar de tener poca experiencia práctica, demostró un buen nivel de habilidad al conducir y aplicó con éxito las técnicas desarrolladas en la formación",
+        "No comments": "Sin comentarios",
         notApprovedReason:
           "No logra desarrollar en plenitud las técnicas de manejo preventivo propuestas por el entrenamiento. Se identifica un nivel de riesgo importante que llevan al dictamen de NO APROBADO. Se emitirá informe especial sobre las características del entrenamiento y las acciones recomendadas. No logra desarrollar en plenitud las técnicas de manejo preventivo propuestas por el entrenamiento. Se identifica un nivel de riesgo importante que llevan al dictamen de NO APROBADO. Se emitirá informe especial sobre las características del entrenamiento y las acciones recomendadas. No logra desarrollar en plenitud las técnicas de manejo preventivo propuestas por el entrenamiento. Se identifica un nivel de riesgo importante que llevan al dictamen de NO APROBADO. Se emitirá informe especial sobre las características del entrenamiento y las acciones recomendadas.",
       },
@@ -192,6 +210,15 @@ i18n.use(initReactI18next).init({
         generalComments: "Algemene Opmerkingen",
         DETECTED: "GEDETECTEERD",
         "NOT DETECTED": "NIET GEDETECTEERD",
+        report: "Verslag",
+        certificate: "Certificaat",
+        "Through the assistance of the instructor and specific work on some of the preventive techniques proposed by the training, he/she manages to reach a satisfactory level. It is recommended to work individually on the development of the revised concepts so that you improve your evolution as a safe driver.":
+          "Door de hulp van de instructeur en specifiek werk aan enkele van de preventieve technieken die door de training worden voorgesteld, slaagt hij/zij erin een bevredigend niveau te bereiken. Het wordt aanbevolen om individueel te werken aan de ontwikkeling van de herziende concepten zodat je je evolutie als veilige bestuurder kunt verbeteren.",
+        "Effectively develops the driving techniques proposed by the training.":
+          "Ontwikkelt effectief de rijtechnieken die tijdens de training zijn voorgesteld.",
+        "Despite having little practical experience, demonstrated a good level of driving ability and successfully applied the techniques developed in training":
+          "Ondanks weinig praktijkervaring toonde hij een goed rijvermogen en paste hij met succes de aangeleerde technieken toe",
+        "No comments": "Geen opmerkingen",
         notApprovedReason:
           "De preventieve rijtechnieken voorgesteld in de training worden niet volledig ontwikkeld. Er wordt een belangrijk risiconiveau vastgesteld dat leidt tot het oordeel NIET GOEDGEKEURD. Er zal een speciaal rapport worden opgesteld over de kenmerken van de training en de aanbevolen acties. De preventieve rijtechnieken voorgesteld in de training worden niet volledig ontwikkeld. Er wordt een belangrijk risiconiveau vastgesteld dat leidt tot het oordeel NIET GOEDGEKEURD. Er zal een speciaal rapport worden opgesteld over de kenmerken van de training en de aanbevolen acties. De preventieve rijtechnieken voorgesteld in de training worden niet volledig ontwikkeld. Er wordt een belangrijk risiconiveau vastgesteld dat leidt tot het oordeel NIET GOEDGEKEURD. Er zal een speciaal rapport worden opgesteld over de kenmerken van de training en de aanbevolen acties.",
       },
@@ -255,6 +282,15 @@ i18n.use(initReactI18next).init({
         generalComments: "Commentaires Généraux",
         DETECTED: "DÉTECTÉ",
         "NOT DETECTED": "NON DÉTECTÉ",
+        report: "Rapport",
+        certificate: "Certificat",
+        "Through the assistance of the instructor and specific work on some of the preventive techniques proposed by the training, he/she manages to reach a satisfactory level. It is recommended to work individually on the development of the revised concepts so that you improve your evolution as a safe driver.":
+          "Grâce à l'assistance de l'instructeur et à un travail spécifique sur certaines des techniques préventives proposées par la formation, il/elle parvient à atteindre un niveau satisfaisant. Il est recommandé de travailler individuellement sur le développement des concepts révisés afin d'améliorer votre évolution en tant que conducteur sûr.",
+        "Effectively develops the driving techniques proposed by the training.":
+          "Développe efficacement les techniques de conduite proposées par la formation.",
+        "Despite having little practical experience, demonstrated a good level of driving ability and successfully applied the techniques developed in training":
+          "Bien qu’il ait peu d’expérience pratique, il a démontré de bonnes aptitudes à la conduite et a appliqué avec succès les techniques acquises pendant la formation",
+        "No comments": "Aucun commentaire",
         notApprovedReason:
           "Ne parvient pas à développer pleinement les techniques de conduite préventive proposées par la formation. Un niveau de risque important a été identifié, ce qui conduit à la décision de NON APPROUVÉ. Un rapport spécial sera émis sur les caractéristiques de la formation et les actions recommandées. Ne parvient pas à développer pleinement les techniques de conduite préventive proposées par la formation. Un niveau de risque important a été identifié, ce qui conduit à la décision de NON APPROUVÉ. Un rapport spécial sera émis sur les caractéristiques de la formation et les actions recommandées. Ne parvient pas à développer pleinement les techniques de conduite préventive proposées par la formation. Un niveau de risque important a été identifié, ce qui conduit à la décision de NON APPROUVÉ. Un rapport spécial sera émis sur les caractéristiques de la formation et les actions recommandées.",
       },
@@ -317,6 +353,15 @@ i18n.use(initReactI18next).init({
         generalComments: "Allgemeine Kommentare",
         DETECTED: "ERKANNT",
         "NOT DETECTED": "NICHT ERKANNT",
+        report: "Bericht",
+        certificate: "Zertifikat",
+        "Through the assistance of the instructor and specific work on some of the preventive techniques proposed by the training, he/she manages to reach a satisfactory level. It is recommended to work individually on the development of the revised concepts so that you improve your evolution as a safe driver.":
+          "Durch die Unterstützung des Ausbilders und spezifische Arbeit an einigen der präventiven Techniken, die im Training vorgeschlagen wurden, erreicht er/sie ein zufriedenstellendes Niveau. Es wird empfohlen, individuell an der Entwicklung der überarbeiteten Konzepte zu arbeiten, damit Sie Ihre Entwicklung als sicherer Fahrer verbessern.",
+        "Effectively develops the driving techniques proposed by the training.":
+          "Entwickelt die im Training vorgeschlagenen Fahrtechniken effektiv.",
+        "Despite having little practical experience, demonstrated a good level of driving ability and successfully applied the techniques developed in training":
+          "Trotz wenig praktischer Erfahrung zeigte er gute Fahrfähigkeiten und wandte erfolgreich die in der Schulung erlernten Techniken an",
+        "No comments": "Keine Kommentare",
         notApprovedReason:
           "Die präventiven Fahrtechniken, die im Training vermittelt werden, konnten nicht vollständig entwickelt werden. Es wurde ein erhebliches Risiko festgestellt, das zur Entscheidung NICHT GENEHMIGT führt. Ein Sonderbericht über die Schulung und empfohlene Maßnahmen wird erstellt. Die präventiven Fahrtechniken, die im Training vermittelt werden, konnten nicht vollständig entwickelt werden. Es wurde ein erhebliches Risiko festgestellt, das zur Entscheidung NICHT GENEHMIGT führt. Ein Sonderbericht über die Schulung und empfohlene Maßnahmen wird erstellt. Die präventiven Fahrtechniken, die im Training vermittelt werden, konnten nicht vollständig entwickelt werden. Es wurde ein erhebliches Risiko festgestellt, das zur Entscheidung NICHT GENEHMIGT führt. Ein Sonderbericht über die Schulung und empfohlene Maßnahmen wird erstellt.",
       },
@@ -380,6 +425,15 @@ i18n.use(initReactI18next).init({
         generalComments: "Ogólne Komentarze",
         DETECTED: "WYKRYTO",
         "NOT DETECTED": "NIE WYKRYTO",
+        report: "Raport",
+        certificate: "Certyfikat",
+        "Through the assistance of the instructor and specific work on some of the preventive techniques proposed by the training, he/she manages to reach a satisfactory level. It is recommended to work individually on the development of the revised concepts so that you improve your evolution as a safe driver.":
+          "Dzięki pomocy instruktora i pracy nad niektórymi z technik prewencyjnych zaproponowanych w trakcie szkolenia, udaje mu/jej się osiągnąć zadowalający poziom. Zaleca się pracę indywidualną nad rozwojem przeglądanych koncepcji, aby poprawić swoją ewolucję jako bezpieczny kierowca.",
+        "Effectively develops the driving techniques proposed by the training.":
+          "Skutecznie rozwija techniki jazdy zaproponowane podczas szkolenia.",
+        "Despite having little practical experience, demonstrated a good level of driving ability and successfully applied the techniques developed in training":
+          "Pomimo niewielkiego doświadczenia praktycznego wykazał się dobrą umiejętnością jazdy i skutecznie zastosował techniki opracowane podczas szkolenia",
+        "No comments": "Brak komentarzy",
         notApprovedReason:
           "Nie rozwija w pełni technik jazdy defensywnej zaproponowanych podczas szkolenia. Zidentyfikowano istotny poziom ryzyka, co prowadzi do decyzji NIEZATWIERDZONY. Zostanie wydany specjalny raport dotyczący cech szkolenia i zalecanych działań. Nie rozwija w pełni technik jazdy defensywnej zaproponowanych podczas szkolenia. Zidentyfikowano istotny poziom ryzyka, co prowadzi do decyzji NIEZATWIERDZONY. Zostanie wydany specjalny raport dotyczący cech szkolenia i zalecanych działań. Nie rozwija w pełni technik jazdy defensywnej zaproponowanych podczas szkolenia. Zidentyfikowano istotny poziom ryzyka, co prowadzi do decyzji NIEZATWIERDZONY. Zostanie wydany specjalny raport dotyczący cech szkolenia i zalecanych działań.",
       },
@@ -442,6 +496,15 @@ i18n.use(initReactI18next).init({
         generalComments: "Opći Komentari",
         DETECTED: "OTKRIVENO",
         "NOT DETECTED": "NIJE OTKRIVENO",
+        report: "Izvješće",
+        certificate: "Certifikat",
+        "Through the assistance of the instructor and specific work on some of the preventive techniques proposed by the training, he/she manages to reach a satisfactory level. It is recommended to work individually on the development of the revised concepts so that you improve your evolution as a safe driver.":
+          "Uz pomoć instruktora i specifičan rad na nekim od preventivnih tehnika predloženih obukom, on/a uspijeva postići zadovoljavajuću razinu. Preporučuje se raditi pojedinačno na razvoju revidiranih koncepata kako biste poboljšali svoj napredak kao siguran vozač.",
+        "Effectively develops the driving techniques proposed by the training.":
+          "Učinkovito razvija tehnike vožnje predložene tijekom obuke.",
+        "Despite having little practical experience, demonstrated a good level of driving ability and successfully applied the techniques developed in training":
+          "Unatoč malom praktičnom iskustvu, pokazao je dobru sposobnost vožnje i uspješno primijenio tehnike naučene tijekom obuke",
+        "No comments": "Nema komentara",
         notApprovedReason:
           "Ne uspijeva u potpunosti razviti tehnike preventivne vožnje predložene obukom. Identificirana je značajna razina rizika koja dovodi do ocjene NIJE ODOBRENO. Izvješće o karakteristikama obuke i preporučenim radnjama bit će izdano. Ne uspijeva u potpunosti razviti tehnike preventivne vožnje predložene obukom. Identificirana je značajna razina rizika koja dovodi do ocjene NIJE ODOBRENO. Izvješće o karakteristikama obuke i preporučenim radnjama bit će izdano. Ne uspijeva u potpunosti razviti tehnike preventivne vožnje predložene obukom. Identificirana je značajna razina rizika koja dovodi do ocjene NIJE ODOBRENO. Izvješće o karakteristikama obuke i preporučenim radnjama bit će izdano.",
       },
@@ -505,6 +568,15 @@ i18n.use(initReactI18next).init({
         generalComments: "Commenti Generali",
         DETECTED: "RILEVATO",
         "NOT DETECTED": "NON RILEVATO",
+        report: "Rapporto",
+        certificate: "Certificato",
+        "Through the assistance of the instructor and specific work on some of the preventive techniques proposed by the training, he/she manages to reach a satisfactory level. It is recommended to work individually on the development of the revised concepts so that you improve your evolution as a safe driver.":
+          "Grazie all'assistenza dell'istruttore e a un lavoro specifico su alcune delle tecniche preventive proposte dalla formazione, lui/lei riesce a raggiungere un livello soddisfacente. Si consiglia di lavorare individualmente sullo sviluppo dei concetti rivisitati per migliorare la propria evoluzione come conducente sicuro.",
+        "Effectively develops the driving techniques proposed by the training.":
+          "Sviluppa efficacemente le tecniche di guida proposte dalla formazione.",
+        "Despite having little practical experience, demonstrated a good level of driving ability and successfully applied the techniques developed in training":
+          "Nonostante la scarsa esperienza pratica, ha dimostrato una buona abilità alla guida e ha applicato con successo le tecniche apprese durante la formazione",
+        "No comments": "Nessun commento",
         notApprovedReason:
           "Non riesce a sviluppare pienamente le tecniche di guida preventiva proposte dalla formazione. Si identifica un livello di rischio significativo che porta al giudizio di NON APPROVATO. Verrà emesso un rapporto speciale sulle caratteristiche della formazione e sulle azioni raccomandate. Non riesce a sviluppare pienamente le tecniche di guida preventiva proposte dalla formazione. Si identifica un livello di rischio significativo che porta al giudizio di NON APPROVATO. Verrà emesso un rapporto speciale sulle caratteristiche della formazione e sulle azioni raccomandate. Non riesce a sviluppare pienamente le tecniche di guida preventiva proposte dalla formazione. Si identifica un livello di rischio significativo che porta al giudizio di NON APPROVATO. Verrà emesso un rapporto speciale sulle caratteristiche della formazione e sulle azioni raccomandate.",
       },

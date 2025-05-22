@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import * as S from "./styles";
 import * as XLSX from "xlsx";
 import { Upload, Select, message, Button } from "antd";
-import { InboxOutlined } from "@ant-design/icons";
+import { InboxOutlined, EyeOutlined, LoadingOutlined } from "@ant-design/icons";
 import html2canvas from "html2canvas";
 import { jsPDF } from "jspdf";
 import type { UploadProps } from "antd";
@@ -19,6 +19,7 @@ import { Chart1 } from "../chart1";
 import { Chart2 } from "../chart2";
 import { Critital } from "../crittical";
 import { Comment } from "../comment";
+import { Certificade } from "../certificade";
 
 const { Dragger } = Upload;
 const { Option } = Select;
@@ -29,7 +30,12 @@ export const XlsxInput = () => {
   const [data, setData] = useState<XlsxDriverData[]>([]);
   const [selectedId, setSelectedId] = useState<string | undefined>();
   const [pdfImage, setPdfImage] = useState<string | null>(null);
+  const [certificadeImg, setcertificadeImg] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+
+  const [viewMode, setViewMode] = useState<"report" | "certificate">("report");
   const pdfRef = useRef<HTMLDivElement>(null);
+  const certicadeRef = useRef<HTMLDivElement>(null);
 
   const handleFile = (file: File) => {
     const reader = new FileReader();
@@ -45,6 +51,7 @@ export const XlsxInput = () => {
           message.success("Arquivo XLSX lido com sucesso!");
         } catch (err) {
           message.error("Erro ao processar o arquivo.");
+          console.log(err);
         }
       }
     };
@@ -60,60 +67,63 @@ export const XlsxInput = () => {
     showUploadList: true,
   };
 
-  // Ordenar os motoristas pelo nome antes de exibir
   const sortedData = [...data].sort((a, b) => {
     const nameA = a.Name.toLowerCase();
     const nameB = b.Name.toLowerCase();
-    if (nameA < nameB) return -1;
-    if (nameA > nameB) return 1;
-    return 0;
+    return nameA.localeCompare(nameB);
   });
 
-  // Seleção direta pelo índice convertido de string para número
   const selectedDriver = selectedId
     ? sortedData[parseInt(selectedId)]
     : undefined;
 
   useEffect(() => {
-    if (selectedDriver && pdfRef.current!) {
-      setTimeout(() => {
-        html2canvas(pdfRef.current!, {
-          scale: 6,
-          useCORS: true,
-          backgroundColor: "#fff",
-        }).then((canvas) => {
-          const imgData = canvas.toDataURL("image/png");
-          setPdfImage(imgData);
-        });
-      }, 100);
+    if (selectedDriver) {
+      if (pdfRef.current) {
+        setTimeout(() => {
+          html2canvas(pdfRef.current!, {
+            scale: 6,
+            useCORS: true,
+            backgroundColor: "#fff",
+          }).then((canvas) => {
+            const imgData = canvas.toDataURL("image/png");
+            setPdfImage(imgData);
+          });
+        }, 100);
+      }
+
+      if (certicadeRef.current) {
+        setTimeout(() => {
+          html2canvas(certicadeRef.current!, {
+            scale: 6,
+            useCORS: true,
+            backgroundColor: "#fff",
+          }).then((canvas) => {
+            const imgData = canvas.toDataURL("image/png");
+            setcertificadeImg(imgData);
+          });
+        }, 100);
+      }
     }
-  }, [selectedDriver, i18n.language]);
+  }, [selectedDriver, i18n.language, viewMode]);
+
+  const pxToMm = (px: number) => (px * 25.4) / 96;
 
   const handleDownloadPDF = () => {
     if (!pdfImage) return;
 
     const pdf = new jsPDF("p", "mm", "a4");
-
     const img = new Image();
     img.src = pdfImage;
 
     img.onload = () => {
-      const pxToMm = (px: number) => (px * 25.4) / 96;
-
-      const imgWidthPx = img.width;
-      const imgHeightPx = img.height;
-
-      const imgWidthMm = pxToMm(imgWidthPx);
-      const imgHeightMm = pxToMm(imgHeightPx);
-
+      const imgWidthMm = pxToMm(img.width);
+      const imgHeightMm = pxToMm(img.height);
       const pageWidth = pdf.internal.pageSize.getWidth();
       const pageHeight = pdf.internal.pageSize.getHeight();
-
       const ratio = Math.min(pageWidth / imgWidthMm, pageHeight / imgHeightMm);
-
       const renderWidth = imgWidthMm * ratio;
       const renderHeight = imgHeightMm * ratio;
-
       const offsetX = (pageWidth - renderWidth) / 2;
       const offsetY = 0;
 
@@ -125,15 +135,66 @@ export const XlsxInput = () => {
         renderWidth,
         renderHeight
       );
-      pdf.save("driver-details.pdf");
+      pdf.save(
+        `driver-details-${selectedDriver!.Name} ${
+          selectedDriver?.["Last name"]
+        } .pdf`
+      );
+
+      handleDownloadCertificatePDF();
+    };
+  };
+
+  const handleDownloadCertificatePDF = () => {
+    setLoading(true);
+    if (!certificadeImg) {
+      if (!certicadeRef.current) {
+        setLoading(false);
+        return;
+      }
+      html2canvas(certicadeRef.current!, {
+        scale: 6,
+        useCORS: true,
+        backgroundColor: "#fff",
+      }).then((canvas) => {
+        const imgData = canvas.toDataURL("image/png");
+        generateCertificatePDF(imgData);
+      });
+    } else {
+      generateCertificatePDF(certificadeImg);
+    }
+  };
+
+  const generateCertificatePDF = (imgData: string) => {
+    const pdf = new jsPDF("l", "mm", "a4");
+    const img = new Image();
+    img.src = imgData;
+
+    img.onload = () => {
+      const imgWidthMm = pxToMm(img.width);
+      const imgHeightMm = pxToMm(img.height);
+      const pageWidth = pdf.internal.pageSize.getWidth();
+      const pageHeight = pdf.internal.pageSize.getHeight();
+      const ratio = Math.min(pageWidth / imgWidthMm, pageHeight / imgHeightMm);
+      const renderWidth = imgWidthMm * ratio;
+      const renderHeight = imgHeightMm * ratio;
+      const offsetX = (pageWidth - renderWidth) / 2;
+      const offsetY = 0;
+
+      pdf.addImage(imgData, "PNG", offsetX, offsetY, renderWidth, renderHeight);
+      pdf.save(
+        `driver-certiticate-${selectedDriver!.Name} ${
+          selectedDriver?.["Last name"]
+        } .pdf`
+      );
+      setLoading(false);
     };
   };
 
   return (
     <S.Holder>
       <S.Content>
-        {/* Painel lateral esquerdo */}
-        <S.SelectContent>
+        <S.SelectContent style={{ display: "flex", justifyContent: "center" }}>
           <Dragger {...props}>
             <p className="ant-upload-drag-icon">
               <InboxOutlined />
@@ -145,7 +206,7 @@ export const XlsxInput = () => {
 
           {sortedData.length > 0 && (
             <Select
-              style={{ width: "70%", marginTop: "1rem" }}
+              style={{ width: "16rem", marginTop: "1rem" }}
               placeholder="Select a driver"
               onChange={(value) => setSelectedId(value)}
               value={selectedId}
@@ -159,10 +220,18 @@ export const XlsxInput = () => {
           )}
 
           {selectedDriver && (
-            <div style={{ display: "flex", gap: "10px", marginTop: "1rem" }}>
+            <div
+              style={{
+                display: "flex",
+                gap: "10px",
+                marginTop: "1rem",
+                flexWrap: "wrap",
+                width: "16rem",
+              }}
+            >
               <Select
                 defaultValue={i18n.language}
-                style={{ width: 180 }}
+                style={{ width: "16rem" }}
                 onChange={(lng) => i18n.changeLanguage(lng)}
               >
                 <Option value="en">
@@ -222,75 +291,146 @@ export const XlsxInput = () => {
                   Italiano
                 </Option>
               </Select>
-              <Button type="primary" onClick={handleDownloadPDF}>
+
+              <Button
+                style={{ width: "16rem" }}
+                type="primary"
+                onClick={handleDownloadPDF}
+              >
                 Download PDF
               </Button>
             </div>
           )}
 
-          <img src={logoCepa} style={{ marginTop: "2rem", width: "50%" }} />
+          <img src={logoCepa} style={{ marginTop: "2rem", width: "12rem" }} />
 
           <span
             style={{
               marginTop: "1rem",
               fontWeight: "bold",
-              fontSize: "2rem",
+              fontSize: "1.5rem",
               color: "#414141",
             }}
           >
             PDF CREATOR
           </span>
+          {loading && (
+            <span
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "6px",
+                marginTop: "1rem",
+              }}
+            >
+              <LoadingOutlined />
+              Downloading
+            </span>
+          )}
         </S.SelectContent>
-
-        {/* Área do PDF Preview */}
+        {/* PDF Preview */}
         {selectedDriver ? (
           <div
             style={{
-              border: "1px solid #ccc",
-              borderRadius: "8px",
-              boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-              backgroundColor: "#fff",
+              display: "flex",
+              flexDirection: "column",
+              minWidth: "1200px",
+              justifyContent: "center",
+              alignItems: "center",
             }}
           >
-            <S.PdfSimulation ref={pdfRef}>
-              <div className="logo-container">
-                <img src={logoCepa} alt="Logo CEPA" />
+            <Button
+              type="primary"
+              style={{
+                marginBottom: "1rem",
+                width: "12rem",
+                display: "flex",
+                alignSelf: "center",
+              }}
+              onClick={() =>
+                setViewMode((prev) =>
+                  prev === "report" ? "certificate" : "report"
+                )
+              }
+            >
+              <EyeOutlined style={{ marginRight: 2 }} />
+              {viewMode === "report" ? t("report") : t("certificate")}
+            </Button>
+
+            {/* Render report only if viewMode is report */}
+            {viewMode === "report" && (
+              <div
+                style={{
+                  border: "1px solid #ccc",
+                  borderRadius: "8px",
+                  boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+                  position: "relative",
+                }}
+              >
+                <S.PdfSimulation ref={pdfRef}>
+                  <div className="logo-container">
+                    <img src={logoCepa} alt="Logo CEPA" />
+                  </div>
+                  <h3>{t("title")}</h3>
+                  <div className="pdf-content">
+                    <Header selectedDriver={selectedDriver} />
+                    <Chart1 selectedDriver={selectedDriver} />
+                    <Chart2 selectedDriver={selectedDriver} />
+                    <Critital selectedDriver={selectedDriver} />
+                    <Comment selectedDriver={selectedDriver} />
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "flex-end",
+                        position: "absolute",
+                        right: 10,
+                        bottom: 10,
+                      }}
+                    >
+                      <img
+                        src={logo}
+                        style={{ width: "1.5rem", marginTop: ".5rem" }}
+                        alt="Logo"
+                      />
+                    </div>
+                  </div>
+                </S.PdfSimulation>
               </div>
-              <h3>{t("title")}</h3>
-              <div className="pdf-content">
-                <Header selectedDriver={selectedDriver} />
-                <Chart1 selectedDriver={selectedDriver} />
-                <Chart2 selectedDriver={selectedDriver} />
-                <Critital selectedDriver={selectedDriver} />
-                <Comment />
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "flex-end",
-                  }}
-                >
-                  <img
-                    src={logo}
-                    style={{ width: "1.5rem", marginTop: ".5rem" }}
-                  />
-                </div>
+            )}
+
+            <div
+              style={{
+                position: viewMode === "certificate" ? "relative" : "relative",
+                overflow: "hidden",
+              }}
+            >
+              <div
+                style={{
+                  position:
+                    viewMode === "certificate" ? "relative" : "absolute",
+                  border: "1px solid #ccc",
+                  borderRadius: "8px",
+                  boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+                }}
+              >
+                <S.PdfSimulationHorizontal ref={certicadeRef}>
+                  <Certificade selectedDriver={selectedDriver} />
+                </S.PdfSimulationHorizontal>
               </div>
-            </S.PdfSimulation>
+            </div>
           </div>
         ) : (
           <div
             style={{
-              border: "1px solid #ccc",
-              borderRadius: "8px",
-              boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-              backgroundColor: "#fff",
+              minWidth: "1200px",
+              display: "flex",
+              justifyContent: "center",
             }}
           >
             <S.PdfSimulation>
               <span style={{ marginTop: "1rem" }}>
                 Input a file and select a driver to see the PDF here
               </span>
-
               <S.Loader>
                 <div className="loader"></div>
               </S.Loader>
