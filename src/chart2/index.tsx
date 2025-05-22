@@ -63,7 +63,7 @@ export const Chart2: React.FC<ChartProps> = ({ selectedDriver }) => {
     driverData: XlsxDriverData
   ) => {
     const sum = columns.reduce((acc, col) => {
-      const value = driverData[col];
+      const value = driverData[col as keyof XlsxDriverData];
       return value === "NA"
         ? acc
         : acc + (isNaN(Number(value)) ? 0 : Number(value));
