@@ -99,7 +99,6 @@ export const Loader = styled.div`
 `;
 
 export const PdfSimulationHorizontal = styled.div`
-  width: 1123px; /* 297mm em ~96 DPI */
   height: 794px; /* 210mm em ~96 DPI */
   padding: 10px;
   border-radius: 8px;

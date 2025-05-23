@@ -269,7 +269,7 @@ export const XlsxInput = () => {
       await new Promise((resolve) => setTimeout(resolve, 400));
 
       const canvasReport = await html2canvas(pdfRef.current!, {
-        scale: 4,
+        scale: 6,
         useCORS: true,
         backgroundColor: "#fff",
       });
@@ -317,7 +317,7 @@ export const XlsxInput = () => {
         await new Promise((resolve) => setTimeout(resolve, 400));
 
         const canvasCert = await html2canvas(certicadeRef.current!, {
-          scale: 4,
+          scale: 6,
           useCORS: true,
           backgroundColor: "#fff",
         });
