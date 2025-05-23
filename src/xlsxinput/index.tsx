@@ -2,7 +2,7 @@
 import { useState, useEffect, useRef } from "react";
 import * as S from "./styles";
 import * as XLSX from "xlsx";
-import { Upload, Select, message, Button } from "antd";
+import { Upload, Select, message, Button, DatePicker } from "antd";
 import { InboxOutlined, EyeOutlined, LoadingOutlined } from "@ant-design/icons";
 import html2canvas from "html2canvas";
 import { jsPDF } from "jspdf";
@@ -11,7 +11,8 @@ import type { XlsxDriverData } from "./types";
 import logoCepa from "../assets/logocepa.png";
 import logo from "../assets/logo.jpg";
 import Flag from "react-world-flags";
-
+import JSZip from "jszip";
+import { saveAs } from "file-saver";
 import Header from "../header";
 import { useTranslation } from "react-i18next";
 import i18n from "../i18n";
@@ -20,22 +21,94 @@ import { Chart2 } from "../chart2";
 import { Critital } from "../crittical";
 import { Comment } from "../comment";
 import { Certificade } from "../certificade";
+import moment from "moment";
 
+const { RangePicker } = DatePicker;
 const { Dragger } = Upload;
 const { Option } = Select;
 
 export const XlsxInput = () => {
   const { t } = useTranslation();
 
+  // States
+  const [applicationDateRange, setApplicationDateRange] = useState<
+    [moment.Moment, moment.Moment] | null
+  >(null);
+
   const [data, setData] = useState<XlsxDriverData[]>([]);
   const [selectedId, setSelectedId] = useState<string | undefined>();
   const [pdfImage, setPdfImage] = useState<string | null>(null);
   const [certificadeImg, setcertificadeImg] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-
+  const [selectedCountries, setSelectedCountries] = useState<string[]>([]);
   const [viewMode, setViewMode] = useState<"report" | "certificate">("report");
+  const [downloadProgress, setDownloadProgress] = useState<{
+    current: number;
+    total: number;
+  } | null>(null);
+
   const pdfRef = useRef<HTMLDivElement>(null);
   const certicadeRef = useRef<HTMLDivElement>(null);
+
+  const countries = Array.from(
+    new Set(data.map((item) => item.Country))
+  ).sort();
+
+  function excelDateToJSDate(serial: number): Date {
+    const utc_days = Math.floor(serial - 25569);
+    const utc_value = utc_days * 86400; // segundos por dia
+    const date_info = new Date(utc_value * 1000);
+
+    const fractional_day = serial - Math.floor(serial) + 0.0000001;
+
+    let total_seconds = Math.floor(86400 * fractional_day);
+
+    const seconds = total_seconds % 60;
+    total_seconds -= seconds;
+
+    const hours = Math.floor(total_seconds / 3600);
+    const minutes = Math.floor((total_seconds % 3600) / 60);
+
+    return new Date(
+      date_info.getFullYear(),
+      date_info.getMonth(),
+      date_info.getDate(),
+      hours,
+      minutes,
+      seconds
+    );
+  }
+
+  const filteredData =
+    selectedCountries.length > 0 || applicationDateRange
+      ? data.filter((item) => {
+          const matchCountry =
+            selectedCountries.length === 0 ||
+            selectedCountries.includes(item.Country);
+
+          const rawDate = item["Application date"];
+          const isValidDate = !isNaN(Number(rawDate));
+
+          if (!isValidDate) return false;
+
+          const appDate = excelDateToJSDate(Number(rawDate));
+
+          const matchDate =
+            !applicationDateRange ||
+            (appDate >= applicationDateRange[0].toDate() &&
+              appDate <= applicationDateRange[1].toDate());
+
+          return matchCountry && matchDate;
+        })
+      : data;
+  const sortedData = [...filteredData].sort((a, b) =>
+    a.Name.toLowerCase().localeCompare(b.Name.toLowerCase())
+  );
+
+  // Driver selecionado
+  const selectedDriver = selectedId
+    ? sortedData[parseInt(selectedId)]
+    : undefined;
 
   const handleFile = (file: File) => {
     const reader = new FileReader();
@@ -51,7 +124,7 @@ export const XlsxInput = () => {
           message.success("Arquivo XLSX lido com sucesso!");
         } catch (err) {
           message.error("Erro ao processar o arquivo.");
-          console.log(err);
+          console.error(err);
         }
       }
     };
@@ -66,16 +139,6 @@ export const XlsxInput = () => {
     accept: ".xlsx",
     showUploadList: true,
   };
-
-  const sortedData = [...data].sort((a, b) => {
-    const nameA = a.Name.toLowerCase();
-    const nameB = b.Name.toLowerCase();
-    return nameA.localeCompare(nameB);
-  });
-
-  const selectedDriver = selectedId
-    ? sortedData[parseInt(selectedId)]
-    : undefined;
 
   useEffect(() => {
     if (selectedDriver) {
@@ -110,7 +173,7 @@ export const XlsxInput = () => {
   const pxToMm = (px: number) => (px * 25.4) / 96;
 
   const handleDownloadPDF = () => {
-    if (!pdfImage) return;
+    if (!pdfImage || !selectedDriver) return;
 
     const pdf = new jsPDF("p", "mm", "a4");
     const img = new Image();
@@ -136,10 +199,10 @@ export const XlsxInput = () => {
         renderHeight
       );
       pdf.save(
-        `driver-details-${selectedDriver!.Name} ${
-          selectedDriver?.["Last name"]
-        } .pdf`
+        `driver_details_${selectedDriver.Name}_${selectedDriver["Last name"]}.pdf`
       );
+
+      if (selectedDriver.Rating === "Not approved") return;
 
       handleDownloadCertificatePDF();
     };
@@ -147,11 +210,13 @@ export const XlsxInput = () => {
 
   const handleDownloadCertificatePDF = () => {
     setLoading(true);
+
     if (!certificadeImg) {
       if (!certicadeRef.current) {
         setLoading(false);
         return;
       }
+
       html2canvas(certicadeRef.current!, {
         scale: 6,
         useCORS: true,
@@ -183,19 +248,146 @@ export const XlsxInput = () => {
 
       pdf.addImage(imgData, "PNG", offsetX, offsetY, renderWidth, renderHeight);
       pdf.save(
-        `driver-certiticate-${selectedDriver!.Name} ${
-          selectedDriver?.["Last name"]
-        } .pdf`
+        `driver_certificate_${selectedDriver?.Name}_${selectedDriver?.["Last name"]}.pdf`
       );
       setLoading(false);
     };
   };
+  const handleDownloadAll = async () => {
+    const zip = new JSZip();
+    const total = sortedData.length;
+    let current = 0;
+
+    setDownloadProgress({ current: 0, total });
+    setLoading(true);
+
+    for (let i = 0; i < total; i++) {
+      const driver = sortedData[i];
+      setSelectedId(i.toString());
+      setViewMode("report");
+
+      await new Promise((resolve) => setTimeout(resolve, 400));
+
+      const canvasReport = await html2canvas(pdfRef.current!, {
+        scale: 4,
+        useCORS: true,
+        backgroundColor: "#fff",
+      });
+
+      const imgDataReport = canvasReport.toDataURL("image/png");
+      const pdfReport = new jsPDF("p", "mm", "a4");
+      const imgReport = new Image();
+      imgReport.src = imgDataReport;
+
+      await new Promise((res) => {
+        imgReport.onload = () => {
+          const imgWidthMm = pxToMm(imgReport.width);
+          const imgHeightMm = pxToMm(imgReport.height);
+          const pageWidth = pdfReport.internal.pageSize.getWidth();
+          const pageHeight = pdfReport.internal.pageSize.getHeight();
+          const ratio = Math.min(
+            pageWidth / imgWidthMm,
+            pageHeight / imgHeightMm
+          );
+          const renderWidth = imgWidthMm * ratio;
+          const renderHeight = imgHeightMm * ratio;
+          const offsetX = (pageWidth - renderWidth) / 2;
+          const offsetY = 0;
+
+          pdfReport.addImage(
+            imgDataReport,
+            "PNG",
+            offsetX,
+            offsetY,
+            renderWidth,
+            renderHeight
+          );
+
+          const reportBuffer = pdfReport.output("arraybuffer");
+          zip.file(
+            `report_${driver.Name}_${driver["Last name"]}.pdf`,
+            reportBuffer
+          );
+          res(null);
+        };
+      });
+
+      if (driver.Rating !== "Not approved") {
+        setViewMode("certificate");
+        await new Promise((resolve) => setTimeout(resolve, 400));
+
+        const canvasCert = await html2canvas(certicadeRef.current!, {
+          scale: 4,
+          useCORS: true,
+          backgroundColor: "#fff",
+        });
+
+        const imgDataCert = canvasCert.toDataURL("image/png");
+        const pdfCert = new jsPDF("l", "mm", "a4");
+        const imgCert = new Image();
+        imgCert.src = imgDataCert;
+
+        await new Promise((res) => {
+          imgCert.onload = () => {
+            const imgWidthMm = pxToMm(imgCert.width);
+            const imgHeightMm = pxToMm(imgCert.height);
+            const pageWidth = pdfCert.internal.pageSize.getWidth();
+            const pageHeight = pdfCert.internal.pageSize.getHeight();
+            const ratio = Math.min(
+              pageWidth / imgWidthMm,
+              pageHeight / imgHeightMm
+            );
+            const renderWidth = imgWidthMm * ratio;
+            const renderHeight = imgHeightMm * ratio;
+            const offsetX = (pageWidth - renderWidth) / 2;
+            const offsetY = 0;
+
+            pdfCert.addImage(
+              imgDataCert,
+              "PNG",
+              offsetX,
+              offsetY,
+              renderWidth,
+              renderHeight
+            );
+
+            const certBuffer = pdfCert.output("arraybuffer");
+            zip.file(
+              `certificate_${driver.Name}_${driver["Last name"]}.pdf`,
+              certBuffer
+            );
+            res(null);
+          };
+        });
+      }
+
+      current += 1;
+      setDownloadProgress({ current, total });
+      canvasReport.remove?.();
+    }
+
+    const zipBlob = await zip.generateAsync({ type: "blob" });
+    saveAs(zipBlob, "drivers_documents.zip");
+
+    setLoading(false);
+    setDownloadProgress(null);
+  };
+
+  console.log(filteredData);
 
   return (
     <S.Holder>
       <S.Content>
-        <S.SelectContent style={{ display: "flex", justifyContent: "center" }}>
-          <Dragger {...props}>
+        <S.SelectContent
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            flexWrap: "wrap",
+            gap: "1rem",
+          }}
+        >
+          {/* Upload XLSX */}
+          <Dragger {...props} style={{ maxWidth: "320px" }}>
             <p className="ant-upload-drag-icon">
               <InboxOutlined />
             </p>
@@ -204,12 +396,48 @@ export const XlsxInput = () => {
             </p>
           </Dragger>
 
-          {sortedData.length > 0 && (
+          {/* Filtro por País */}
+          {countries && (
             <Select
-              style={{ width: "16rem", marginTop: "1rem" }}
-              placeholder="Select a driver"
+              mode="multiple"
+              allowClear
+              placeholder={"Filter by Country"}
+              style={{ width: "16rem" }}
+              onChange={(value) => {
+                setSelectedCountries(value as string[]);
+                setSelectedId(undefined);
+              }}
+              value={selectedCountries}
+            >
+              {countries.map((country) => (
+                <Option key={country} value={country}>
+                  {country}
+                </Option>
+              ))}
+            </Select>
+          )}
+
+          {sortedData && (
+            <RangePicker
+              format="DD/MM/YYYY"
+              style={{ width: "16rem" }}
+              onChange={(dates) =>
+                setApplicationDateRange(
+                  dates as [moment.Moment, moment.Moment] | null
+                )
+              }
+              allowClear
+              placeholder={["Start Date", "End Date"]}
+            />
+          )}
+
+          {sortedData && (
+            <Select
+              style={{ width: "16rem" }}
+              placeholder={"Select a Driver"}
               onChange={(value) => setSelectedId(value)}
               value={selectedId}
+              allowClear
             >
               {sortedData.map((item, index) => (
                 <Option key={index} value={index.toString()}>
@@ -223,15 +451,16 @@ export const XlsxInput = () => {
             <div
               style={{
                 display: "flex",
+                flexDirection: "column",
                 gap: "10px",
                 marginTop: "1rem",
-                flexWrap: "wrap",
-                width: "16rem",
+                maxWidth: "16rem",
+                width: "100%",
               }}
             >
               <Select
                 defaultValue={i18n.language}
-                style={{ width: "16rem" }}
+                style={{ width: "100%" }}
                 onChange={(lng) => i18n.changeLanguage(lng)}
               >
                 <Option value="en">
@@ -292,28 +521,42 @@ export const XlsxInput = () => {
                 </Option>
               </Select>
 
+              {selectedDriver.Rating !== "Not approved" && (
+                <Button
+                  type="dashed"
+                  style={{
+                    width: "100%",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                  onClick={() =>
+                    setViewMode((prev) =>
+                      prev === "report" ? "certificate" : "report"
+                    )
+                  }
+                >
+                  <EyeOutlined style={{ marginRight: 8 }} />
+                  {viewMode === "report" ? t("report") : t("certificate")}
+                </Button>
+              )}
+
               <Button
-                style={{ width: "16rem" }}
+                style={{ width: "100%" }}
                 type="primary"
                 onClick={handleDownloadPDF}
               >
                 Download PDF
               </Button>
+              <Button
+                style={{ width: "100%" }}
+                type="primary"
+                onClick={handleDownloadAll}
+              >
+                Download All
+              </Button>
             </div>
           )}
-
-          <img src={logoCepa} style={{ marginTop: "2rem", width: "12rem" }} />
-
-          <span
-            style={{
-              marginTop: "1rem",
-              fontWeight: "bold",
-              fontSize: "1.5rem",
-              color: "#414141",
-            }}
-          >
-            PDF CREATOR
-          </span>
           {loading && (
             <span
               style={{
@@ -327,8 +570,33 @@ export const XlsxInput = () => {
               Downloading
             </span>
           )}
+          {downloadProgress && (
+            <span style={{ textAlign: "center", marginTop: "0.5rem" }}>
+              {downloadProgress.current} of {downloadProgress.total}
+            </span>
+          )}
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              marginTop: "2rem",
+            }}
+          >
+            <img src={logoCepa} alt="Logo CEPA" style={{ width: "12rem" }} />
+            <span
+              style={{
+                marginTop: "1rem",
+                fontWeight: "bold",
+                fontSize: "1.5rem",
+                color: "#414141",
+              }}
+            >
+              PDF CREATOR
+            </span>
+          </div>
         </S.SelectContent>
-        {/* PDF Preview */}
+
         {selectedDriver ? (
           <div
             style={{
@@ -337,27 +605,11 @@ export const XlsxInput = () => {
               minWidth: "1200px",
               justifyContent: "center",
               alignItems: "center",
+              gap: "1rem",
+              marginTop: "1rem",
             }}
           >
-            <Button
-              type="primary"
-              style={{
-                marginBottom: "1rem",
-                width: "12rem",
-                display: "flex",
-                alignSelf: "center",
-              }}
-              onClick={() =>
-                setViewMode((prev) =>
-                  prev === "report" ? "certificate" : "report"
-                )
-              }
-            >
-              <EyeOutlined style={{ marginRight: 2 }} />
-              {viewMode === "report" ? t("report") : t("certificate")}
-            </Button>
-
-            {/* Render report only if viewMode is report */}
+            {/* Relatório */}
             {viewMode === "report" && (
               <div
                 style={{
@@ -365,6 +617,7 @@ export const XlsxInput = () => {
                   borderRadius: "8px",
                   boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
                   position: "relative",
+                  backgroundColor: "#fff",
                 }}
               >
                 <S.PdfSimulation ref={pdfRef}>
@@ -402,6 +655,8 @@ export const XlsxInput = () => {
               style={{
                 position: viewMode === "certificate" ? "relative" : "relative",
                 overflow: "hidden",
+                width: "100%",
+                maxWidth: "1200px",
               }}
             >
               <div
@@ -411,6 +666,7 @@ export const XlsxInput = () => {
                   border: "1px solid #ccc",
                   borderRadius: "8px",
                   boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+                  backgroundColor: "#fff",
                 }}
               >
                 <S.PdfSimulationHorizontal ref={certicadeRef}>
