@@ -50,7 +50,8 @@ export const XlsxInput = () => {
   const pdfRef = useRef<HTMLDivElement>(null);
   const certicadeRef = useRef<HTMLDivElement>(null);
   const secondRef = useRef<HTMLDivElement>(null);
-
+  console.log(pdfImage);
+  console.log(certificadeImg);
   const countries = Array.from(
     new Set(data.map((item) => item.Country))
   ).sort();
