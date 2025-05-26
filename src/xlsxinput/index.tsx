@@ -146,11 +146,11 @@ export const XlsxInput = () => {
       if (pdfRef.current) {
         setTimeout(() => {
           html2canvas(pdfRef.current!, {
-            scale: 4,
+            scale: 2,
             useCORS: true,
             backgroundColor: "#fff",
           }).then((canvas) => {
-            const imgData = canvas.toDataURL("image/png");
+            const imgData = canvas.toDataURL("image/jpeg", 1);
             setPdfImage(imgData);
           });
         }, 100);
@@ -159,11 +159,11 @@ export const XlsxInput = () => {
       if (certicadeRef.current) {
         setTimeout(() => {
           html2canvas(certicadeRef.current!, {
-            scale: 4,
+            scale: 2,
             useCORS: true,
             backgroundColor: "#fff",
           }).then((canvas) => {
-            const imgData = canvas.toDataURL("image/png");
+            const imgData = canvas.toDataURL("image/jpeg", 1);
             setcertificadeImg(imgData);
           });
         }, 100);
@@ -181,12 +181,12 @@ export const XlsxInput = () => {
     const pdf = new jsPDF("p", "mm", "a4");
 
     const canvasReport = await html2canvas(pdfRef.current, {
-      scale: 6,
+      scale: 2,
       useCORS: true,
       backgroundColor: "#fff",
     });
 
-    const imgDataReport = canvasReport.toDataURL("image/png");
+    const imgDataReport = canvasReport.toDataURL("image/jpeg", 1);
 
     const imgReport = new Image();
     imgReport.src = imgDataReport;
@@ -208,23 +208,24 @@ export const XlsxInput = () => {
 
         pdf.addImage(
           imgDataReport,
-          "PNG",
+          "JPEG",
           offsetX,
           offsetY,
           renderWidth,
-          renderHeight
+          renderHeight,
+          "FAST"
         );
         resolve(null);
       };
     });
 
     const canvasSecond = await html2canvas(secondRef.current, {
-      scale: 6,
+      scale: 2,
       useCORS: true,
       backgroundColor: "#fff",
     });
 
-    const imgDataSecond = canvasSecond.toDataURL("image/png");
+    const imgDataSecond = canvasSecond.toDataURL("image/jpeg", 1);
 
     pdf.addPage();
     const imgSecond = new Image();
@@ -247,11 +248,12 @@ export const XlsxInput = () => {
 
         pdf.addImage(
           imgDataSecond,
-          "PNG",
+          "JPEG",
           offsetX,
           offsetY,
           renderWidth,
-          renderHeight
+          renderHeight,
+          "FAST"
         );
         resolve(null);
       };
@@ -275,19 +277,27 @@ export const XlsxInput = () => {
 
     try {
       const canvasCert = await html2canvas(certicadeRef.current, {
-        scale: 6,
+        scale: 2,
         useCORS: true,
         backgroundColor: "#fff",
       });
 
-      const imgDataCert = canvasCert.toDataURL("image/png");
+      const imgDataCert = canvasCert.toDataURL("image/jpeg", 1);
 
       const pdfCert = new jsPDF("l", "mm", "a4");
 
       const pageWidth = pdfCert.internal.pageSize.getWidth();
       const pageHeight = pdfCert.internal.pageSize.getHeight();
 
-      pdfCert.addImage(imgDataCert, "PNG", 0, 0, pageWidth, pageHeight);
+      pdfCert.addImage(
+        imgDataCert,
+        "JPEG",
+        0,
+        0,
+        pageWidth,
+        pageHeight,
+        "FAST"
+      );
 
       pdfCert.save(
         `driver_certificate_${selectedDriver?.Name}_${selectedDriver?.["Last name"]}.pdf`
@@ -317,12 +327,12 @@ export const XlsxInput = () => {
 
       // PDF Report - primeira página
       const canvasReport = await html2canvas(pdfRef.current!, {
-        scale: 6,
+        scale: 2,
         useCORS: true,
         backgroundColor: "#fff",
       });
 
-      const imgDataReport = canvasReport.toDataURL("image/png");
+      const imgDataReport = canvasReport.toDataURL("image/jpeg", 1);
       const pdfReport = new jsPDF("p", "mm", "a4");
       const imgReport = new Image();
       imgReport.src = imgDataReport;
@@ -344,11 +354,12 @@ export const XlsxInput = () => {
 
           pdfReport.addImage(
             imgDataReport,
-            "PNG",
+            "JPEG",
             offsetX,
             offsetY,
             renderWidth,
-            renderHeight
+            renderHeight,
+            "FAST"
           );
           res(null);
         };
@@ -356,12 +367,12 @@ export const XlsxInput = () => {
 
       // PDF Report - segunda página
       const canvasSecond = await html2canvas(secondRef.current!, {
-        scale: 6,
+        scale: 2,
         useCORS: true,
         backgroundColor: "#fff",
       });
 
-      const imgDataSecond = canvasSecond.toDataURL("image/png");
+      const imgDataSecond = canvasSecond.toDataURL("image/jpeg", 1);
       const imgSecond = new Image();
       imgSecond.src = imgDataSecond;
 
@@ -384,11 +395,12 @@ export const XlsxInput = () => {
 
           pdfReport.addImage(
             imgDataSecond,
-            "PNG",
+            "JPEG",
             offsetX,
             offsetY,
             renderWidth,
-            renderHeight
+            renderHeight,
+            "FAST"
           );
 
           const reportBuffer = pdfReport.output("arraybuffer");
@@ -407,12 +419,12 @@ export const XlsxInput = () => {
         await new Promise((resolve) => setTimeout(resolve, 400));
 
         const canvasCert = await html2canvas(certicadeRef.current!, {
-          scale: 6,
+          scale: 2,
           useCORS: true,
           backgroundColor: "#fff",
         });
 
-        const imgDataCert = canvasCert.toDataURL("image/png");
+        const imgDataCert = canvasCert.toDataURL("image/jpeg", 1);
         const pdfCert = new jsPDF("l", "mm", "a4");
         const imgCert = new Image();
         imgCert.src = imgDataCert;
@@ -437,11 +449,12 @@ export const XlsxInput = () => {
 
             pdfCert.addImage(
               imgDataCert,
-              "PNG",
+              "JPEG",
               offsetX,
               offsetY,
               renderWidth,
-              renderHeight
+              renderHeight,
+              "FAST"
             );
 
             const certBuffer = pdfCert.output("arraybuffer");
