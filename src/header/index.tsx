@@ -52,7 +52,7 @@ const Header: React.FC<HeaderProps> = ({ selectedDriver }) => {
         <S.Section>
           <span>
             <p>{t("activityName")}:</p>
-            <div>BTW</div>
+            <div>Behind the Wheel </div>
           </span>
 
           <span>

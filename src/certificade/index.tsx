@@ -66,7 +66,7 @@ export const Certificade: React.FC<CertificadeProps> = ({ selectedDriver }) => {
         {selectedDriver.Name} {selectedDriver["Last name"]}
       </h1>
       <h3 style={{ margin: 0, marginBottom: ".2rem" }}>
-        {t("For successfully completing the")} BTW Training
+        {t("For successfully completing the")} Behind the Wheel
       </h3>
       <h4 style={{ margin: 0 }}>
         {t(selectedDriver.Country)} -{" "}
