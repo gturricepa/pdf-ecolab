@@ -5,12 +5,15 @@ import purple from "../assets/purple.png";
 import yellow from "../assets/yellow.png";
 import logocepa from "../assets/logocepa.png";
 import chiqui from "../assets/chiqui.png";
+import { useTranslation } from "react-i18next";
 
 interface CertificadeProps {
   selectedDriver: XlsxDriverData;
 }
 
 export const Certificade: React.FC<CertificadeProps> = ({ selectedDriver }) => {
+  const { t } = useTranslation();
+
   function excelDateToJSDate(
     serial: number | string,
     locale: string = "pt-BR"
@@ -55,18 +58,18 @@ export const Certificade: React.FC<CertificadeProps> = ({ selectedDriver }) => {
           right: -55,
         }}
       />
-      <h2>Training Course</h2>
-      <h2 style={{ fontSize: "3.5rem" }}>Certificate</h2>
+      <h2>{t("Training Course")}</h2>
+      <h2 style={{ fontSize: "3.5rem" }}>{t("Certificate")}</h2>
       <div style={{ marginBottom: "2rem" }}> </div>
-      <h2>This certificate is awarded to</h2>
+      <h2>{t("This certificate is awarded to")}</h2>
       <h1>
         {selectedDriver.Name} {selectedDriver["Last name"]}
       </h1>
       <h3 style={{ margin: 0, marginBottom: ".2rem" }}>
-        For successfully completing the BTW Training
+        {t("For successfully completing the")} BTW Training
       </h3>
       <h4 style={{ margin: 0 }}>
-        {selectedDriver.Country} -{" "}
+        {t(selectedDriver.Country)} -{" "}
         {excelDateToJSDate(selectedDriver["Application date"])}
       </h4>
       <div
@@ -113,7 +116,9 @@ export const Certificade: React.FC<CertificadeProps> = ({ selectedDriver }) => {
           >
             Francisco Millán Tanco
           </p>
-          <p style={{ fontWeight: 100, margin: 0 }}>Director of Operations</p>
+          <p style={{ fontWeight: 100, margin: 0 }}>
+            {t("Director of Operations")}
+          </p>
           <p style={{ fontWeight: 100, margin: 0 }}>CEPA Mobility</p>
         </div>
       </div>
