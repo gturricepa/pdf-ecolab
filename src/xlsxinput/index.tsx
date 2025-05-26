@@ -273,7 +273,7 @@ export const XlsxInput = () => {
 
     setLoading(true);
 
-    await new Promise((resolve) => setTimeout(resolve, 400));
+    await new Promise((resolve) => setTimeout(resolve, 100));
 
     try {
       const canvasCert = await html2canvas(certicadeRef.current, {
@@ -323,7 +323,7 @@ export const XlsxInput = () => {
       setSelectedId(i.toString());
       setViewMode("report");
 
-      await new Promise((resolve) => setTimeout(resolve, 400));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       // PDF Report - primeira página
       const canvasReport = await html2canvas(pdfRef.current!, {
@@ -416,7 +416,7 @@ export const XlsxInput = () => {
       // PDF Certificate (apenas para aprovados)
       if (driver.Rating !== "Not approved") {
         setViewMode("certificate");
-        await new Promise((resolve) => setTimeout(resolve, 400));
+        await new Promise((resolve) => setTimeout(resolve, 100));
 
         const canvasCert = await html2canvas(certicadeRef.current!, {
           scale: 2,
