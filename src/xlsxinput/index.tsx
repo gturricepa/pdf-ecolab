@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { useState, useEffect, useRef } from "react";
 import * as S from "./styles";
@@ -41,6 +42,8 @@ export const XlsxInput = () => {
   const [certificadeImg, setcertificadeImg] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [selectedCountries, setSelectedCountries] = useState<string[]>([]);
+  console.log(pdfImage);
+  console.log(certificadeImg);
 
   const [downloadProgress, setDownloadProgress] = useState<{
     current: number;
@@ -173,10 +176,8 @@ export const XlsxInput = () => {
   const pxToMm = (px: number) => (px * 25.4) / 96;
 
   const handleDownloadPDF = async () => {
-    console.log("entrou");
     setLoading(true);
     if (!pdfRef.current || !secondRef.current || !selectedDriver) return;
-    console.log("passou");
 
     const pdf = new jsPDF("p", "mm", "a4");
 
