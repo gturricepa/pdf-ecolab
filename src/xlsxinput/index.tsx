@@ -41,7 +41,7 @@ export const XlsxInput = () => {
   const [certificadeImg, setcertificadeImg] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [selectedCountries, setSelectedCountries] = useState<string[]>([]);
-  const [viewMode, setViewMode] = useState<"report" | "certificate">("report");
+
   const [downloadProgress, setDownloadProgress] = useState<{
     current: number;
     total: number;
@@ -50,8 +50,7 @@ export const XlsxInput = () => {
   const pdfRef = useRef<HTMLDivElement>(null);
   const certicadeRef = useRef<HTMLDivElement>(null);
   const secondRef = useRef<HTMLDivElement>(null);
-  console.log(pdfImage);
-  console.log(certificadeImg);
+
   const countries = Array.from(
     new Set(data.map((item) => item.Country))
   ).sort();
@@ -169,19 +168,20 @@ export const XlsxInput = () => {
         }, 100);
       }
     }
-  }, [selectedDriver, i18n.language, viewMode]);
+  }, [selectedDriver, i18n.language]);
 
   const pxToMm = (px: number) => (px * 25.4) / 96;
 
   const handleDownloadPDF = async () => {
     console.log("entrou");
+    setLoading(true);
     if (!pdfRef.current || !secondRef.current || !selectedDriver) return;
     console.log("passou");
 
     const pdf = new jsPDF("p", "mm", "a4");
 
     const canvasReport = await html2canvas(pdfRef.current, {
-      scale: 2,
+      scale: 6,
       useCORS: true,
       backgroundColor: "#fff",
     });
@@ -211,16 +211,16 @@ export const XlsxInput = () => {
           "JPEG",
           offsetX,
           offsetY,
+
           renderWidth,
-          renderHeight,
-          "FAST"
+          renderHeight
         );
         resolve(null);
       };
     });
 
     const canvasSecond = await html2canvas(secondRef.current, {
-      scale: 2,
+      scale: 6,
       useCORS: true,
       backgroundColor: "#fff",
     });
@@ -251,9 +251,9 @@ export const XlsxInput = () => {
           "JPEG",
           offsetX,
           offsetY,
+
           renderWidth,
-          renderHeight,
-          "FAST"
+          renderHeight
         );
         resolve(null);
       };
@@ -273,8 +273,6 @@ export const XlsxInput = () => {
 
     setLoading(true);
 
-    await new Promise((resolve) => setTimeout(resolve, 100));
-
     try {
       const canvasCert = await html2canvas(certicadeRef.current, {
         scale: 2,
@@ -289,15 +287,7 @@ export const XlsxInput = () => {
       const pageWidth = pdfCert.internal.pageSize.getWidth();
       const pageHeight = pdfCert.internal.pageSize.getHeight();
 
-      pdfCert.addImage(
-        imgDataCert,
-        "JPEG",
-        0,
-        0,
-        pageWidth,
-        pageHeight,
-        "FAST"
-      );
+      pdfCert.addImage(imgDataCert, "JPEG", 0, 0, pageWidth, pageHeight);
 
       pdfCert.save(
         `driver_certificate_${selectedDriver?.Name}_${selectedDriver?.["Last name"]}.pdf`
@@ -321,13 +311,12 @@ export const XlsxInput = () => {
     for (let i = 0; i < total; i++) {
       const driver = sortedData[i];
       setSelectedId(i.toString());
-      setViewMode("report");
 
       await new Promise((resolve) => setTimeout(resolve, 100));
 
       // PDF Report - primeira página
       const canvasReport = await html2canvas(pdfRef.current!, {
-        scale: 2,
+        scale: 6,
         useCORS: true,
         backgroundColor: "#fff",
       });
@@ -357,9 +346,9 @@ export const XlsxInput = () => {
             "JPEG",
             offsetX,
             offsetY,
+
             renderWidth,
-            renderHeight,
-            "FAST"
+            renderHeight
           );
           res(null);
         };
@@ -367,7 +356,7 @@ export const XlsxInput = () => {
 
       // PDF Report - segunda página
       const canvasSecond = await html2canvas(secondRef.current!, {
-        scale: 2,
+        scale: 6,
         useCORS: true,
         backgroundColor: "#fff",
       });
@@ -399,8 +388,7 @@ export const XlsxInput = () => {
             offsetX,
             offsetY,
             renderWidth,
-            renderHeight,
-            "FAST"
+            renderHeight
           );
 
           const reportBuffer = pdfReport.output("arraybuffer");
@@ -415,11 +403,10 @@ export const XlsxInput = () => {
 
       // PDF Certificate (apenas para aprovados)
       if (driver.Rating !== "Not approved") {
-        setViewMode("certificate");
         await new Promise((resolve) => setTimeout(resolve, 100));
 
         const canvasCert = await html2canvas(certicadeRef.current!, {
-          scale: 2,
+          scale: 6,
           useCORS: true,
           backgroundColor: "#fff",
         });
@@ -452,9 +439,9 @@ export const XlsxInput = () => {
               "JPEG",
               offsetX,
               offsetY,
+
               renderWidth,
-              renderHeight,
-              "FAST"
+              renderHeight
             );
 
             const certBuffer = pdfCert.output("arraybuffer");

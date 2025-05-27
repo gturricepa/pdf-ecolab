@@ -13,7 +13,6 @@ const Header: React.FC<HeaderProps> = ({ selectedDriver }) => {
   //#6BAC96 lightgreen
   //#E3B303 yellow
   // #C4575B
-  console.log(selectedDriver);
 
   function excelDateToJSDate(
     serial: number | string,
