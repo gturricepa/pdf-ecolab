@@ -66,7 +66,11 @@ const Header: React.FC<HeaderProps> = ({ selectedDriver }) => {
         <S.Section2>
           <span>
             <p>{t("yearsExperience")}:</p>
-            <div>{t(selectedDriver["Years of experience"])}</div>{" "}
+            <div>
+              {selectedDriver["Years of experience"] === "null"
+                ? "N/A"
+                : t(selectedDriver["Years of experience"])}
+            </div>{" "}
           </span>
           <span>
             <p>{t("country")}:</p>

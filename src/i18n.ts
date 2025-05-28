@@ -70,6 +70,11 @@ i18n.use(initReactI18next).init({
         certificate: "Certificate",
         "Training Course": "Training Course",
         Certificate: "Certificate",
+        DEUTSCHLAND: "Germany",
+        ESPANA: "Spain",
+        IRELAND: "Ireland",
+        "THE NETHERLANDS": "The Netherlands",
+        "UNITED KINGDOM": "United Kingdom",
         "A good level of knowledge is identified regarding previous vehicle inspections and integrated technological systems.":
           "A good level of knowledge is identified regarding previous vehicle inspections and integrated technological systems.",
         "It will be appropriate to pay attention to carrying out prior inspections of the vehicle before making a trip.":
@@ -185,6 +190,11 @@ i18n.use(initReactI18next).init({
         certificate: "Certificado",
         "Training Course": "Curso de Formación",
         Certificate: "Certificado",
+        DEUTSCHLAND: "Alemania",
+        ESPANA: "España",
+        IRELAND: "Irlanda",
+        "THE NETHERLANDS": "Países Bajos",
+        "UNITED KINGDOM": "Reino Unido",
         "A good level of knowledge is identified regarding previous vehicle inspections and integrated technological systems.":
           "Se identifica un buen nivel de conocimiento sobre las inspecciones previas del vehículo y los sistemas tecnológicos integrados.",
         "It will be appropriate to pay attention to carrying out prior inspections of the vehicle before making a trip.":
@@ -300,6 +310,11 @@ i18n.use(initReactI18next).init({
         certificate: "Certificaat",
         "Training Course": "Opleidingscursus",
         Certificate: "Certificaat",
+        DEUTSCHLAND: "Duitsland",
+        ESPANA: "Spanje",
+        IRELAND: "Ierland",
+        "THE NETHERLANDS": "Nederland",
+        "UNITED KINGDOM": "Verenigd Koninkrijk",
         "A good level of knowledge is identified regarding previous vehicle inspections and integrated technological systems.":
           "Er is een goed kennisniveau vastgesteld over eerdere voertuiginspecties en geïntegreerde technologische systemen.",
         "It will be appropriate to pay attention to carrying out prior inspections of the vehicle before making a trip.":
@@ -416,6 +431,11 @@ i18n.use(initReactI18next).init({
         certificate: "Certificat",
         "Training Course": "Cours de Formation",
         Certificate: "Certificat",
+        DEUTSCHLAND: "Allemagne",
+        ESPANA: "Espagne",
+        IRELAND: "Irlande",
+        "THE NETHERLANDS": "Pays-Bas",
+        "UNITED KINGDOM": "Royaume-Uni",
         "A good level of knowledge is identified regarding previous vehicle inspections and integrated technological systems.":
           "Un bon niveau de connaissance est identifié concernant les inspections antérieures du véhicule et les systèmes technologiques intégrés.",
         "It will be appropriate to pay attention to carrying out prior inspections of the vehicle before making a trip.":
@@ -530,6 +550,11 @@ i18n.use(initReactI18next).init({
         certificate: "Zertifikat",
         "Training Course": "Schulungskurs",
         Certificate: "Zertifikat",
+        DEUTSCHLAND: "Deutschland",
+        ESPANA: "Spanien",
+        IRELAND: "Irland",
+        "THE NETHERLANDS": "Niederlande",
+        "UNITED KINGDOM": "Vereinigtes Königreich",
         "A good level of knowledge is identified regarding previous vehicle inspections and integrated technological systems.":
           "Ein gutes Wissensniveau in Bezug auf frühere Fahrzeuginspektionen und integrierte technologische Systeme wurde festgestellt.",
         "It will be appropriate to pay attention to carrying out prior inspections of the vehicle before making a trip.":
@@ -646,6 +671,11 @@ i18n.use(initReactI18next).init({
         certificate: "Certyfikat",
         "Training Course": "Kurs Szkoleniowy",
         Certificate: "Certyfikat",
+        DEUTSCHLAND: "Niemcy",
+        ESPANA: "Hiszpania",
+        IRELAND: "Irlandia",
+        "THE NETHERLANDS": "Holandia",
+        "UNITED KINGDOM": "Wielka Brytania",
         "A good level of knowledge is identified regarding previous vehicle inspections and integrated technological systems.":
           "Zidentyfikowano dobry poziom wiedzy dotyczącej wcześniejszych przeglądów pojazdu i zintegrowanych systemów technologicznych.",
         "It will be appropriate to pay attention to carrying out prior inspections of the vehicle before making a trip.":
@@ -760,6 +790,11 @@ i18n.use(initReactI18next).init({
         certificate: "Certifikat",
         "Training Course": "Tečaj Obuke",
         Certificate: "Potvrda",
+        DEUTSCHLAND: "Njemačka",
+        ESPANA: "Španjolska",
+        IRELAND: "Irska",
+        "THE NETHERLANDS": "Nizozemska",
+        "UNITED KINGDOM": "Ujedinjeno Kraljevstvo",
         "A good level of knowledge is identified regarding previous vehicle inspections and integrated technological systems.":
           "Utvrđena je dobra razina znanja o prethodnim inspekcijama vozila i integriranim tehnološkim sustavima.",
         "It will be appropriate to pay attention to carrying out prior inspections of the vehicle before making a trip.":
@@ -875,6 +910,11 @@ i18n.use(initReactI18next).init({
         certificate: "Certificato",
         "Training Course": "Corso di Formazione",
         Certificate: "Certificato",
+        DEUTSCHLAND: "Germania",
+        ESPANA: "Spagna",
+        IRELAND: "Irlanda",
+        "THE NETHERLANDS": "Paesi Bassi",
+        "UNITED KINGDOM": "Regno Unito",
         "A good level of knowledge is identified regarding previous vehicle inspections and integrated technological systems.":
           "È stato identificato un buon livello di conoscenza riguardo alle ispezioni precedenti del veicolo e ai sistemi tecnologici integrati.",
         "It will be appropriate to pay attention to carrying out prior inspections of the vehicle before making a trip.":
